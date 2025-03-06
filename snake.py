@@ -62,7 +62,7 @@ def check_Boardfull(checkBoard = Board):
             
     return False 
 ### Check the Winning Condition
-def chech_Win(player, checkBoard = Board):
+def check_Win(player, checkBoard = Board):
     for col in range(Board_Col):
         if checkBoard[0][col] == player and checkBoard[1][col] == player and checkBoard[2][col] == player: 
             return True
@@ -80,4 +80,62 @@ def chech_Win(player, checkBoard = Board):
 
 ###  MiniMax The Main Function for the Game Which is basically the Whole Backbone of the Game
 def miniMax(minMaxBoard, depth, maxiMizing):
-     
+    if check_Win(2, minMaxBoard):
+         return float('inf')
+    elif check_Win(1, minMaxBoard):
+        return float('-inf')
+    elif check_Boardfull(minMaxBoard):
+        return 0
+    
+    if maxiMizing:
+        best_Scr = float('-inf')
+        for row in range(Board_Rows):
+            for col in range(Board_Col):
+                if minMaxBoard[row][col] == 0:
+                    minMaxBoard[row][col] = 2
+                    score = miniMax(minMaxBoard, depth + 1, False)
+                    minMaxBoard[row][col] = 0
+                    bext_Scr = max(score, best_Scr)
+
+        return best_Scr
+    else:
+        best_Scr = float('inf')
+        for row in range(Board_Rows):
+            for col in range(Board_Col):
+                if minMaxBoard[row][col] == 0:
+                    minMaxBoard[row][col] = 1
+                    score = miniMax(minMaxBoard, depth + 1, True)
+                    minMaxBoard[row][col] = 0
+                    best_Sctr = min(score, best_Scr)
+        return best_Scr
+
+
+def best_move():
+    best_Scr = float('-inf')
+    move = (-1, -1)
+    for row in range(Board_Rows):
+        for col in range(Board_Col):
+            if Board[row][col] == 0:
+                Board[row][col] = 2
+                score = miniMax(Board, 0, False)
+                Board[row][col] = 0
+                if score > best_Scr:
+                    best_Scr = score
+                    move = (row, col)
+
+    if move != (-1, -1):
+        markSquare(move[0], move[1], 2)
+        return True
+    return False
+
+
+def restart():
+    Screen.fill(Black)
+    Boardlines()
+    for row in range(Board_Rows):
+        for col in range(Board_Col):
+            Board[row][col] = 0
+    
+
+    
+
