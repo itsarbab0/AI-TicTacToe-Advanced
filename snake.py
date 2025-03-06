@@ -137,5 +137,12 @@ def restart():
             Board[row][col] = 0
     
 
+### Main Looop
+
+Boardlines()
+
+player = 1  # Player turn 1: User, 2: AI
+
+
     
 
